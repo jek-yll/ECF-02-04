@@ -42,7 +42,7 @@ services:
       context: ./payment-service
       dockerfile: Dockerfile
     ports:
-      - "${PAYMENT_SERVICE_PORT}:9050"
+      - "${PAYMENT_SERVICE_PORT}:9002"
     environment:
       DB_HOST: mysql
       DB_PORT: ${DB_PORT}
@@ -55,7 +55,7 @@ services:
       context: ./common-data-service
       dockerfile: Dockerfile
     ports:
-      - "${COMMON_DATA_SERVICE_PORT}:9000"
+      - "${COMMON_DATA_SERVICE_PORT}:9003"
     environment:
       DB_HOST: mysql
       DB_PORT: ${DB_PORT}
@@ -63,12 +63,12 @@ services:
       DB_USER: ${DB_USER}
       DB_PASS: ${DB_PASS}
 
-  search-suggestion-service:
+  search-service:
     build:
-      context: ./search-suggestion-service
+      context: ./search-service
       dockerfile: Dockerfile
     ports:
-      - "${SEARCH_SUGGESTION_SERVICE_PORT}:10000"
+      - "${SEARCH_SERVICE_PORT}:9004"
     environment:
       DB_HOST: mysql
       DB_PORT: ${DB_PORT}
