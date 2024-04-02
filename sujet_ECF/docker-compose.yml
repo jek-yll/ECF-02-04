@@ -1,0 +1,88 @@
+version: '3.8'
+
+services:
+  #DB-MYSQL
+  bdd:
+    container_name: bdd
+    image: mysql
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: ecommerce_app_database
+    networks:
+      - ecf-network
+    
+  #REDIS
+  redis:
+    container_name: redis
+    image: redis
+    environment:
+      - REDIS_PASSWORD=mypass
+      - REDIS_PORT=6379
+    networks:
+      - ecf-network
+
+  #API-AUTH
+  api-authentication:
+    container_name: api-auth
+    restart: always
+    build: 
+     context: ./server/authentication-service
+     dockerfile: dockerfile
+    ports:
+     - 7000:7000
+    #depends_on:
+    # - db
+    networks:
+     - ecf-network
+
+  #API-PAYMENT
+  api-payment:
+    container_name: api-payment
+    restart: always
+    build: 
+     context: ./server/payment-service
+     dockerfile: dockerfile
+    ports:
+     - 9050:9050
+    #depends_on:
+    # - db
+    networks:
+     - ecf-network
+
+  #API-DATA
+  api-data:
+    container_name: api-data
+    build: 
+     context: ./server/common-data-service
+     dockerfile: dockerfile
+
+    ports:
+     - 9000:9000
+    #depends_on:
+    # - db
+    networks:
+     - ecf-network
+
+
+  #FRONT-REACT
+  front-react:
+    container_name: front-react
+    build: 
+      context: ./client
+      dockerfile: dockerfile
+    ports:
+      - 3000:80
+    networks: 
+      - ecf-network
+
+networks:
+  ecf-network:
+    driver: bridge
+
+volumes: 
+  db_data:
