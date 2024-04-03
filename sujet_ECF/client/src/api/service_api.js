@@ -9,6 +9,7 @@ const {
     REACT_APP_SEARCH_SUGGESTION_SERVICE_URL
 } = process.env
 
+
 export const authServiceAPI = axios.create({
     baseURL: REACT_APP_AUTHENTICATION_SERVICE_URL || `http://localhost:${REACT_APP_AUTHENTICATION_SERVICE_PORT}`
 })
